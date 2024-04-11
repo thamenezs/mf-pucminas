@@ -5,7 +5,7 @@ namespace mf_pucminas.Modelo
 {
 
     [Table("Veiculos")]
-    public class Veiculo
+    public class Veiculo : LinksHATEOS
     {
         [Key]
         public int Id { get; set; }

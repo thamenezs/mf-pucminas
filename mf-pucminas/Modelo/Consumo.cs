@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace mf_pucminas.Modelo
 {
     [Table("Consumo")]
-    public class Consumo
+    public class Consumo : LinksHATEOS
     {
         [Key]
         public int Id { get; set; }

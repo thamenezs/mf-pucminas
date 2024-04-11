@@ -42,6 +42,7 @@ namespace mf_pucminas.Controllers
                 .FirstOrDefaultAsync(c => c.Id == id);
             if (model == null) return NotFound();
 
+            GerarLinks(model);
             return Ok(model);
         }
 
@@ -70,6 +71,13 @@ namespace mf_pucminas.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
+        }
+
+        private void GerarLinks(Veiculo model)
+        {
+            model.Links.Add(new LinkDto(model.Id, Url.ActionLink(), rel: "self", metodo: "GET"));
+            model.Links.Add(new LinkDto(model.Id, Url.ActionLink(), rel: "update", metodo: "PUT"));
+            model.Links.Add(new LinkDto(model.Id, Url.ActionLink(), rel: "delete", metodo: "Delete"));
         }
     }
 }
