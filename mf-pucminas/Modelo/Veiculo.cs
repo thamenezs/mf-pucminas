@@ -20,5 +20,6 @@ namespace mf_pucminas.Modelo
         [Required]
         public int AnoModelo { get; set; }
         public ICollection<Consumo> Consumos { get; set; }
+        public ICollection<VeiculoUsuarios> Usuarios { get; set; }
     }
 }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using mf_pucminas.Modelo;
 
@@ -11,9 +12,11 @@ using mf_pucminas.Modelo;
 namespace mf_pucminas.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240411011239_M01")]
+    partial class M01
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -87,11 +90,11 @@ namespace mf_pucminas.Migrations
 
             modelBuilder.Entity("mf_pucminas.Modelo.Usuario", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("MyProperty")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MyProperty"));
 
                     b.Property<string>("Nome")
                         .IsRequired()
@@ -104,7 +107,7 @@ namespace mf_pucminas.Migrations
                     b.Property<int>("Perfil")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("MyProperty");
 
                     b.ToTable("Usuarios");
                 });
