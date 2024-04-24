@@ -1,9 +1,11 @@
 ﻿using mf_pucminas.Modelo;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace mf_pucminas.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class VeiculosController : ControllerBase
@@ -39,6 +41,7 @@ namespace mf_pucminas.Controllers
         {
             var model = await _context.Veiculos
                 .Include(t => t.Consumos)
+                .Include(t => t.Usuarios).ThenInclude(t => t.Usuario)
                 .FirstOrDefaultAsync(c => c.Id == id);
             if (model == null) return NotFound();
 
@@ -78,6 +81,31 @@ namespace mf_pucminas.Controllers
             model.Links.Add(new LinkDto(model.Id, Url.ActionLink(), rel: "self", metodo: "GET"));
             model.Links.Add(new LinkDto(model.Id, Url.ActionLink(), rel: "update", metodo: "PUT"));
             model.Links.Add(new LinkDto(model.Id, Url.ActionLink(), rel: "delete", metodo: "Delete"));
+        }
+
+        [HttpPost("{id}/usuarios")]
+        public async Task<ActionResult> AddUser(int id, VeiculoUsuarios model)
+        {
+            if (id != model.Veiculoid) return BadRequest();
+            _context.VeiculoUsuarios.Add(model);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetById", new { id = model.Veiculoid }, model);
+        }
+
+        [HttpDelete("{id}/usuarios/{userId}")]
+        public async Task<ActionResult> DeleteUser(int id, int userId)
+        {
+            var model = await _context.VeiculoUsuarios
+                .Where(c => c.Veiculoid == id && c.UsuarioId == userId)
+                .FirstOrDefaultAsync();
+
+            if (model == null) return NotFound();
+
+            _context.VeiculoUsuarios .Remove(model);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
         }
     }
 }
